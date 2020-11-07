@@ -1,0 +1,15 @@
+{
+  "name": "bingo-book",
+  "version": "1.0.0",
+  "description": "Bingo Book Ladder",
+  "main": "bot.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Jake",
+  "license": "ISC",
+  "dependencies": {
+    "discord.js": "^12.4.1",
+    "mongoose": "^5.10.13"
+  }
+}

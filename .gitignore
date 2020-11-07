@@ -1,0 +1,4 @@
+node_modules
+config-dev.js
+.DS_Store
+.vscode
