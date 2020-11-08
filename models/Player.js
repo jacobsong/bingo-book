@@ -12,7 +12,7 @@ const playerSchema = new Schema(
     losses: { type: Number, default: 0 },
     streak: { type: Number, default: 0 },
     bingo: { type: Boolean, default: false },
-    rank: { type: Number, default: 0 }
+    rank: { type: Number, default: 1 }
   }
 );
 

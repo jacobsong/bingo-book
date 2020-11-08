@@ -4,6 +4,9 @@ module.exports = {
   name: "help",
   description: "List all of my commands",
   guildOnly: false,
+  roleRequired: 0,
+  argsRequired: 0,
+  mentionsRequired: 0,
   usage: undefined,
   async execute(msg, args) {
     const { commands } = msg.client;

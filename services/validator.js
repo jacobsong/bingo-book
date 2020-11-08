@@ -21,7 +21,7 @@ const checkCommand = (msg, command, args) => {
     const argsOnly = args.filter(arg => !re.test(arg));
     if (command.argsRequired != argsOnly.length) {
       if (command.usage) {
-        msg.reply(`the proper usage would be: \`${prefix}${command.name} ${command.usage}\``);
+        msg.reply(`the proper usage would be: \`${command.name} ${command.usage}\``);
         return false;
       }
     }
@@ -46,7 +46,6 @@ const checkCommand = (msg, command, args) => {
 };
 
 const checkRecordArgs = (msg, args) => {
-  //const msgArr = msg.content.split(" ");
   const gamesWon1 = Number(args[1]);
   const gamesWon2 = Number(args[3]);
 

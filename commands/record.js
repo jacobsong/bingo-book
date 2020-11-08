@@ -6,7 +6,7 @@ module.exports = {
   name: "record",
   description: "Records a match between 2 players",
   guildOnly: true,
-  roleRequired: 2,
+  roleRequired: 1,
   argsRequired: 2,
   mentionsRequired: 2,
   usage: "<user> <games-won> <user> <games-won>",
@@ -99,7 +99,7 @@ module.exports = {
       embed.setFooter(footer);
       msg.channel.send(embed);
     } catch (e) {
-      console.log(e);
+      console.error(e);
       embed.setColor("RED");
       embed.setDescription("Database error");
       msg.channel.send(embed);
