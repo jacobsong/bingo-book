@@ -33,11 +33,11 @@ module.exports = {
         if (days === 1) dayText = "Yesterday";
         if (days > 1) dayText = `${days} days ago`;
         if (profile.bingo) {
-          embed.setAuthor("⭕ Bingo");
+          embed.setTitle("⭕ Bingo");
         }
 
         embed.setColor("LUMINOUS_VIVID_PINK");
-        embed.setTitle(profile.discordName);
+        embed.setAuthor(profile.discordName);
         embed.setThumbnail(playerAvatar);
         embed.setDescription(stats);
         embed.setFooter(`Last match played: ${dayText}`);

@@ -16,12 +16,11 @@ const record = async (msg, args) => {
     const secondMember = await msg.guild.members.fetch(secondId);
     const bingoRole = msg.guild.roles.cache.find(role => role.name === "Bingo");
     const roles = new Discord.Collection();
-    Object.keys(config.rankNames).forEach(rankName => {
-      const rankRole = msg.guild.roles.cache.find(role => role.name === rankName);
-      roles.set(rankName, rankRole);
-    })
+    Object.keys(config.ranks).forEach(rankNum => {
+      const rankRole = msg.guild.roles.cache.find(role => role.name === config.ranks[rankNum]);
+      roles.set(rankNum, rankRole);
+    });
     
-
     if (firstPlayer === null) {
       firstPlayer = new Player({ discordId: firstId, discordName: firstMember.user.username });
     }
@@ -55,7 +54,19 @@ const record = async (msg, args) => {
 
     const winnerOldELO = winner.points;
     const loserOldELO = loser.points;
-    calculateELO(winner, loser);
+    const {winnerRankUp, loserRankDown} = calculateELO(winner, loser, winnerOldELO, loserOldELO);
+
+    if (winnerRankUp && winner.rank < 4) {
+      await winnerMember.roles.remove(roles.get(winner.rank.toString()));
+      winner.rank += 1;
+      await winnerMember.roles.add(roles.get(winner.rank.toString()));
+    }
+
+    if (loserRankDown && loser.rank > 1) {
+      await loserMember.roles.remove(roles.get(loser.rank.toString()));
+      loser.rank -= 1;
+      await loserMember.roles.add(roles.get(loser.rank.toString()));
+    }
 
     let eloFieldMsg = "";
     let footer = "";
@@ -70,6 +81,7 @@ const record = async (msg, args) => {
       const prize = 12
       winner.points += prize;
       loser.bingo = false;
+      loser.points -= prize;
       await loserMember.roles.remove(bingoRole);
       footer += `💰 ${winner.discordName} has crossed ${loser.discordName} off the Bingo Book\n`;
       eloFieldMsg = `\`\`\`Points:  ${winnerOldELO} => ${winner.points} + ${prize}\`\`\``;
@@ -95,20 +107,37 @@ const record = async (msg, args) => {
   }
 }
 
-const calculateELO = (winner, loser) => {
+const calculateELO = (winner, loser, winnerOldPoints, loserOldPoints) => {
   const rtnVal = {
     winnerRankUp: false,
     loserRankDown: false,
-    bingoPrize: 0
   };
+
+  let pointsGained;
+  if ((winner.rank - loser.rank) === 0) {
+    pointsGained = 7;
+  } else if ((winner.rank - loser.rank) === 1) {
+    pointsGained = 4;
+  } else if ((winner.rank - loser.rank) === -1) {
+    pointsGained = 10;
+  }
+
   winner.wins += 1;
-  winner.points += 7
+  winner.points += pointsGained;
   winner.streak += 1;
   winner.lastMatch = Date.now();
   loser.losses += 1;
-  loser.points -= 7
+  loser.points -= pointsGained;
   loser.streak = 0;
   loser.lastMatch = Date.now();
+
+  if (winnerOldPoints < 65 && winner.points >= 65 && winner.points < 130) rtnVal.winnerRankUp = true;
+  if (winnerOldPoints < 130 && winner.points >= 130 && winner.points < 220) rtnVal.winnerRankUp = true;
+  if (winnerOldPoints < 220 && winner.points >= 220) rtnVal.winnerRankUp = true;
+
+  if (loserOldPoints >= 33 && loser.points < 33) rtnVal.loserRankDown = true;
+  if (loserOldPoints >= 98 && loser.points < 98) rtnVal.loserRankDown = true;
+  if (loserOldPoints >= 175 && loser.points < 175) rtnVal.loserRankDown = true;
 
   return rtnVal;
 };

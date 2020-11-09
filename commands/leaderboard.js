@@ -23,7 +23,7 @@ module.exports = {
           if (wins === 0 && losses === 0) {
             ratio = "0.00";
           } else {
-            ratio = isFinite(wins/losses) ? ratio.toFixed(2) : "♾️";
+            ratio = isFinite(wins/losses) ? (wins/losses).toFixed(2) : "♾️";
           }
           
           embed.addField(`#${index + 1} - ${players[index].discordName}`, `\`\`\`[Points: ${players[index].points}  W/L Ratio: ${ratio}]\`\`\``)
