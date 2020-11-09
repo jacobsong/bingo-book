@@ -17,7 +17,8 @@ module.exports = {
       embed.setColor("GREEN");
       embed.setDescription("**Success**, leaderboard has been deleted");
       msg.channel.send(embed);
-    } catch {
+    } catch (e) {
+      console.error(e);
       embed.setColor("RED");
       embed.setDescription("Database error");
       msg.channel.send(embed);

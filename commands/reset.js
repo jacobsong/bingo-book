@@ -3,7 +3,7 @@ const Player = require("../models/Player");
 
 module.exports = {
   name: "reset",
-  description: "Resets stats for the mentioned user",
+  description: "Resets stats for the mentioned user. Use [=help reset] for an example",
   guildOnly: true,
   roleRequired: 3,
   argsRequired: 0,
@@ -26,7 +26,8 @@ module.exports = {
       embed.setDescription("Player not found");
       msg.channel.send(embed);
       return;
-    } catch {
+    } catch (e) {
+      console.error(e);
       embed.setColor("RED");
       embed.setDescription("Database error");
       msg.channel.send(embed);

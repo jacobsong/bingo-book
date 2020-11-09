@@ -35,10 +35,20 @@ const checkCommand = (msg, command, args) => {
     }
   }
 
-  //Check if record command
-  if (command.name === "record") {
+  //Check if record/report command
+  if (command.name === "record" || command.name === "report") {
+    const rolesExist = checkRankRolesExist(msg, args);
+    if (rolesExist === false) return false;
     const isRecordValid = checkRecordArgs(msg, args);
     if (isRecordValid === false) return false;
+  }
+
+  //Check if upsert command
+  if (command.name === "upsert") {
+    const rolesExist = checkRankRolesExist(msg, args);
+    if (rolesExist === false) return false;
+    const isUpsertValid = checkUpsertArgs(msg, args);
+    if (isUpsertValid === false) return false;
   }
 
   //Return true if no validation errors
@@ -48,6 +58,27 @@ const checkCommand = (msg, command, args) => {
 const checkRecordArgs = (msg, args) => {
   const gamesWon1 = Number(args[1]);
   const gamesWon2 = Number(args[3]);
+  const mentioned = msg.mentions.members.array();
+  const player1Rank = mentioned[0].roles.cache.find(role => role.name in config.rankNames);
+  const player2Rank = mentioned[1].roles.cache.find(role => role.name in config.rankNames);
+
+  if (player1Rank === undefined) {
+    msg.reply(`${mentioned[0]} does not have a ninja role`);
+    return false;
+  }
+
+  if (player2Rank === undefined) {
+    msg.reply(`${mentioned[1]} does not have a ninja role`);
+    return false;
+  }
+
+  const player1NumericRank = config.rankNames[player1Rank.name];
+  const player2NumericRank = config.rankNames[player2Rank.name];
+
+  if (Math.abs(player1NumericRank - player2NumericRank) > 1) {
+    msg.reply("**Error**: Your opponent's rank is too high/too low");
+    return false;
+  }
 
   if (isNaN(gamesWon1) || isNaN(gamesWon2)) {
     msg.reply(`**Error**: <games-won> should be a number`);
@@ -72,6 +103,52 @@ const checkRecordArgs = (msg, args) => {
   //Return true if no validation errors
   return true;
 };
+
+const checkUpsertArgs = (msg, args) => {
+  const points = Number(args[1]);
+  const wins = Number(args[2]);
+  const losses = Number(args[3]);
+  const streak = Number(args[4]);
+  const bingo = args[5];
+  const rank = args[6];
+  let errors = "";
+
+  if (isNaN(points)) errors += "\n**Error**: <points> must be a number";
+  if (isNaN(wins) || wins < 0) errors += "\n**Error**: <wins> must be a positive number";
+  if (isNaN(losses) || losses < 0) errors += "\n**Error**: <losses> must be a positive number";
+  if (isNaN(streak) || streak < 0) errors += "\n**Error**: <streak> must be a positive number";
+  if (bingo != 'true' && bingo != 'false') {
+    errors += "\n**Error**: <bingo> must be true or false";
+  }
+  if (!(rank in config.rankNames)) errors += `\n**Error**: <rank> must be one of the following: ${Object.keys(config.rankNames)}`;
+
+  if (errors !== "") {
+    msg.reply(errors);
+    return false;
+  }
+  
+  //Return true if no validation errors
+  return true;
+
+}
+
+const checkRankRolesExist = (msg, args) => {
+  let errors = "";
+  Object.keys(config.rankNames).forEach(rankName => {
+    const rankRole = msg.guild.roles.cache.find(role => role.name === rankName);
+    if (rankRole === undefined) {
+      errors += `\n**Error**: the role ${rankName} does not exist. Please create this role.`;
+    }
+  });
+
+  if (errors !== "") {
+    msg.reply(errors);
+    return false;
+  }
+
+  //Return true if no validation errors
+  return true;
+}
 
 module.exports = {
   checkCommand

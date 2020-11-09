@@ -29,7 +29,7 @@ client.on("userUpdate", async (oldUser, newUser) => {
     await Player.updateOne({ discordId: oldUser.id },
       { $set: { discordName: newUser.username } }
     );
-  } catch {
+  } catch (e) {
     console.log("Error updating user's discordName");
   }
 });
@@ -38,7 +38,7 @@ client.on("userUpdate", async (oldUser, newUser) => {
 client.on('guildMemberRemove', async member => {
   try {
     await Player.deleteOne({ discordId: member.id })
-  } catch {
+  } catch (e) {
     console.log("Error deleting guild member");
   }
 });
@@ -64,9 +64,9 @@ client.on("message", async message => {
     const command = client.commands.get(commandName)
     const isValid = Validator.checkCommand(message, command, args);
     if (isValid === false) return;
-    command.execute(message, args, client);
-	} catch (error) {
-		console.error(error);
+    command.execute(message, args);
+	} catch (e) {
+		console.error(e);
 		message.reply('Error executing that command');
 	}
 });
@@ -74,6 +74,6 @@ client.on("message", async message => {
 // Login with bot token
 try {
   client.login(config.token);
-} catch {
-  console.log("Failed to login to Discord");
+} catch (e) {
+  console.error("Failed to login to Discord");
 }

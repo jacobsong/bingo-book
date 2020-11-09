@@ -13,21 +13,22 @@ module.exports = {
     const embed = new Discord.MessageEmbed();
 
     try {
-      const players = await Player.find({}).select("discordName points").sort({ points: -1 }).lean();
-      let board = "Empty";
+      const players = await Player.find({}).select("discordName wins losses points").sort({ points: -1 }).lean();
+
       if (players.length > 0) {
-        board = "```";
         for (let index = 0; index < players.length; index++) {
-          board += `#${index + 1} - Points: ${players[index].points} ${players[index].discordName}\n`;
+          let ratio = (players[index].wins/players[index].losses);
+          let ratioDesc = isFinite(ratio) ? ratio.toFixed(2) : "♾️";
+          embed.addField(`#${index + 1} - ${players[index].discordName}`, `\`\`\`[Points: ${players[index].points}  W/L Ratio: ${ratioDesc}]\`\`\``)
         }
-        board += "```";
+      } else {
+        embed.setDescription("Empty");
       }
 
-      embed.setTitle("Leaderboard");
       embed.setColor("GOLD");
-      embed.setDescription(board);
       await msg.channel.send(embed);
-    } catch {
+    } catch (e) {
+      console.error(e);
       embed.setColor("RED");
       embed.setDescription("Database error");
       msg.channel.send(embed);

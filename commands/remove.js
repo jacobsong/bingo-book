@@ -3,7 +3,7 @@ const Player = require("../models/Player");
 
 module.exports = {
   name: "remove",
-  description: "Removes the user ID from the leaderboard",
+  description: "Removes the user ID from the leaderboard. Use [=help remove] for an example",
   guildOnly: true,
   roleRequired: 3,
   argsRequired: 1,
@@ -21,7 +21,8 @@ module.exports = {
       embed.setColor("GREEN");
       embed.setDescription("**Success**: Deleted user ID " + args[0]);
       msg.channel.send(embed);
-    } catch {
+    } catch (e) {
+      console.error(e);
       embed.setDescription("Database error");
       msg.channel.send(embed);
     }

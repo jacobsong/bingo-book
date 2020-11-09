@@ -11,5 +11,11 @@ module.exports = {
     2: "Chunin",
     3: "Jonin",
     4: "Anbu"
+  },
+  rankNames: {
+    "Genin": 1,
+    "Chunin": 2,
+    "Jonin": 3,
+    "Anbu": 4
   }
 };
