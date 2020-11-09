@@ -17,9 +17,16 @@ module.exports = {
 
       if (players.length > 0) {
         for (let index = 0; index < players.length; index++) {
-          let ratio = (players[index].wins/players[index].losses);
-          let ratioDesc = isFinite(ratio) ? ratio.toFixed(2) : "♾️";
-          embed.addField(`#${index + 1} - ${players[index].discordName}`, `\`\`\`[Points: ${players[index].points}  W/L Ratio: ${ratioDesc}]\`\`\``)
+          const wins = players[index].wins;
+          const losses = players[index].losses;
+          let ratio;
+          if (wins === 0 && losses === 0) {
+            ratio = "0.00";
+          } else {
+            ratio = isFinite(wins/losses) ? ratio.toFixed(2) : "♾️";
+          }
+          
+          embed.addField(`#${index + 1} - ${players[index].discordName}`, `\`\`\`[Points: ${players[index].points}  W/L Ratio: ${ratio}]\`\`\``)
         }
       } else {
         embed.setDescription("Empty");

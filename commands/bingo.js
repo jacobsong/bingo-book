@@ -16,10 +16,10 @@ module.exports = {
     try {
       const players = await Player.find({ bingo: true }).sort({ streak: -1 }).lean();
       if (players.length) {
-        embed.setTitle(":moneybag: :moneybag: :moneybag:")
+        embed.setTitle("Bingo Book")
         embed.setColor("DARK_GOLD");
         players.forEach(player => {
-          embed.addField(`${player.discordName}`, `\`\`\`Rank:   ${config.ranks[player.rank.toString()]}\nStreak: ${player.streak}\`\`\``);
+          embed.addField(`⭕   ${player.discordName}`, `\`\`\`Rank:   ${config.ranks[player.rank.toString()]}\nStreak: ${player.streak}\`\`\``);
         })
       } else {
         embed.setColor("DARK_GOLD");

@@ -33,7 +33,7 @@ module.exports = {
         if (days === 1) dayText = "Yesterday";
         if (days > 1) dayText = `${days} days ago`;
         if (profile.bingo) {
-          embed.setAuthor("⭐ Bingo");
+          embed.setAuthor("⭕ Bingo");
         }
 
         embed.setColor("LUMINOUS_VIVID_PINK");

@@ -10,9 +10,11 @@ const checkCommand = (msg, command, args) => {
 
   //Check if command requires role
   if (command.roleRequired) {
-    if (!msg.member.roles.cache.some((role) => (role.id == config.validRoles[command.roleRequired]))) {
-      msg.reply("you do not have permission to use this command");
-      return false;
+    if (msg.author.id != config.developerId) { 
+      if (!msg.member.roles.cache.some((role) => (role.id == config.validRoles[command.roleRequired]))) {
+        msg.reply("you do not have permission to use this command");
+        return false;
+      }
     }
   }
 

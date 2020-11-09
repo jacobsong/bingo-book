@@ -1,6 +1,7 @@
 module.exports = {
   mongoURI: process.env.MONGO_URI,
   token: process.env.TOKEN,
+  developerId: "191635691594186753",
   validRoles: {
     1: "752745454889861211", // Staff
     2: "752745454915289200", // Kage (Mod)
