@@ -4,7 +4,7 @@
   "description": "Bingo Book Ladder",
   "main": "bot.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "deploy": "ssh root@104.248.114.64 'git -C /root/apps/bingo-book pull'"
   },
   "author": "Jake",
   "license": "ISC",

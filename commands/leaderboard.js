@@ -1,5 +1,6 @@
 const Discord = require("discord.js");
 const Player = require("../models/Player");
+const config = require("../config/config");
 
 module.exports = {
   name: "leaderboard",
@@ -8,12 +9,24 @@ module.exports = {
   roleRequired: 0,
   argsRequired: 0,
   mentionsRequired: 0,
-  usage: undefined,
+  usage: "<rank> (optional)",
   async execute(msg, args) {
     const embed = new Discord.MessageEmbed();
+    const rankColors = new Discord.Collection();
+    rankColors.set("Genin", "#36cf5f");
+    rankColors.set("Chunin", "#96cc2e");
+    rankColors.set("Jonin", "#e6a323");
+    rankColors.set("Anbu", "#d32819");
 
     try {
-      const players = await Player.find({}).select("discordName wins losses points").sort({ points: -1 }).lean();
+      let players;
+      if (args[0]) {
+        players = await Player.find({ rank: config.rankNames[args[0]] }).select("discordName wins losses points").sort({ points: -1 }).lean().limit(25);
+        embed.setColor(rankColors.get(args[0]));
+      } else {
+        players = await Player.find({}).select("discordName wins losses points").sort({ points: -1 }).lean().limit(25);
+        embed.setColor("GOLD");
+      }
 
       if (players.length > 0) {
         for (let index = 0; index < players.length; index++) {
@@ -32,7 +45,6 @@ module.exports = {
         embed.setDescription("Empty");
       }
 
-      embed.setColor("GOLD");
       await msg.channel.send(embed);
     } catch (e) {
       console.error(e);

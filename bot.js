@@ -4,14 +4,11 @@ const mongoose = require("mongoose");
 const Player = require("./models/Player");
 const config = require("./config/config");
 const Validator = require("./services/validator");
-const client = new Discord.Client({ disabledEvents: ["TYPING_START"] });
+const client = new Discord.Client({ presence: { activity: { name: "=help", type: "PLAYING" } } } );
 const prefix = "=";
 
 // Verify connected and set presence
-client.once("ready", () => {
-  console.log("Connected as " + client.user.tag);
-  client.user.setPresence({ game: { name: "type =help" } });
-});
+client.once("ready", () => console.log("Connected as " + client.user.tag));
 
 // Connect to MongoDB Atlas
 mongoose.connect(config.mongoURI, { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true }).then(

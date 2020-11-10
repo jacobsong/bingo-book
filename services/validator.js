@@ -53,6 +53,19 @@ const checkCommand = (msg, command, args) => {
     if (isUpsertValid === false) return false;
   }
 
+  //Check if leaderboard command
+  if (command.name === "leaderboard") {
+    let rank = args[0];
+    if (rank) {
+      rank = rank.charAt(0).toUpperCase() + rank.slice(1).toLowerCase();
+      if (!(rank in config.rankNames)) {
+        msg.reply(`**Error**: <rank> must be one of the following: ${Object.keys(config.rankNames)}`);
+        return false;
+      }
+      args[0] = rank;
+    }
+  }
+
   //Return true if no validation errors
   return true;
 };
