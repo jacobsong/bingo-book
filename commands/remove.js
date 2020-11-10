@@ -5,7 +5,7 @@ module.exports = {
   name: "remove",
   description: "Removes the user ID from the leaderboard. Use [=help remove] for an example",
   guildOnly: true,
-  roleRequired: 3,
+  roleRequired: 1,
   argsRequired: 1,
   mentionsRequired: 0,
   usage: "<userID>",

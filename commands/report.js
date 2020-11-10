@@ -52,11 +52,12 @@ module.exports = {
           return reaction.emoji.name === "✅" && user.id === loserUser.id;
         }
 
-        const collected = await msg2.awaitReactions(filter, { max: 1, time: 60000, errors: ["time"] });
+        const collected = await msg2.awaitReactions(filter, { max: 1, time: 10000, errors: ["time"] });
         if (collected.size) {
           Utils.record(msg, args);
         }
       } catch (e) {
+        msg.author.send("Your opponent did not verify the results within 5 minutes");
         return;
       }
       

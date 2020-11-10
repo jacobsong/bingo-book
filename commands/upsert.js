@@ -6,7 +6,7 @@ module.exports = {
   name: "upsert",
   description: "Add or update a player. Use [=help upsert] for an example",
   guildOnly: true,
-  roleRequired: 2,
+  roleRequired: 1,
   argsRequired: 6,
   mentionsRequired: 1,
   usage: "<user> <points> <wins> <losses> <streak> <bingo> <rank>",

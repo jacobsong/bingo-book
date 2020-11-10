@@ -5,7 +5,7 @@ module.exports = {
   name: "reset",
   description: "Resets stats for the mentioned user. Use [=help reset] for an example",
   guildOnly: true,
-  roleRequired: 3,
+  roleRequired: 1,
   argsRequired: 0,
   mentionsRequired: 1,
   usage: "<user>",

@@ -78,7 +78,7 @@ const record = async (msg, args) => {
     }
 
     if (loser.bingo) {
-      const prize = 12
+      const prize = 7 + Math.round(0.1 * loser.points);
       winner.points += prize;
       loser.bingo = false;
       loser.points -= prize;
