@@ -15,12 +15,8 @@ client.once("ready", () => {
 
 // Connect to MongoDB Atlas
 mongoose.connect(config.mongoURI, { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true }).then(
-  () => {
-    console.log("MongoDB connected...");
-  },
-  err => {
-    console.log("MongoDB could not connect..." + err);
-  }
+  () => { console.log("MongoDB connected..."); },
+  err => { console.log("MongoDB could not connect..." + err); }
 );
 
 // Update DB when users change usernames
