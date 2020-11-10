@@ -52,7 +52,7 @@ module.exports = {
           return reaction.emoji.name === "✅" && user.id === loserUser.id;
         }
 
-        const collected = await msg2.awaitReactions(filter, { max: 1, time: 10000, errors: ["time"] });
+        const collected = await msg2.awaitReactions(filter, { max: 1, time: 300000, errors: ["time"] });
         if (collected.size) {
           Utils.record(msg, args);
         }

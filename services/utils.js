@@ -68,7 +68,6 @@ const record = async (msg, args) => {
       await loserMember.roles.add(roles.get(loser.rank.toString()));
     }
 
-    let eloFieldMsg = "";
     let footer = "";
 
     if (winner.streak === 3) {
@@ -77,17 +76,14 @@ const record = async (msg, args) => {
       await winnerMember.roles.add(bingoRole);
     }
 
-    if (loser.bingo) {
-      const prize = 7 + Math.round(0.1 * loser.points);
+    if (loser.bingo && winner.rank <= loser.rank) {
+      const prize = Math.round(0.1 * loserOldELO);
       winner.points += prize;
       loser.bingo = false;
       loser.points -= prize;
       await loserMember.roles.remove(bingoRole);
       footer += `💰 ${winner.discordName} has crossed ${loser.discordName} off the Bingo Book\n`;
-      eloFieldMsg = `\`\`\`Points:  ${winnerOldELO} => ${winner.points} + ${prize}\`\`\``;
-    } else {
-      eloFieldMsg = `\`\`\`Points:  ${winnerOldELO} => ${winner.points}\`\`\``;
-    }
+    }    
 
     await winner.save();
     await loser.save();
@@ -95,7 +91,7 @@ const record = async (msg, args) => {
     embed.setColor("AQUA");
     embed.setDescription(`${winner.discordName} wins ${winnerGames}-${loserGames}`);
     embed.setThumbnail("https://cdn.discordapp.com/emojis/774169144240373803.png");
-    embed.addField(`${winner.discordName}`, eloFieldMsg);
+    embed.addField(`${winner.discordName}`, `\`\`\`Points:  ${winnerOldELO} => ${winner.points}\`\`\``);
     embed.addField(`${loser.discordName}`, `\`\`\`Points:  ${loserOldELO} => ${loser.points}\`\`\``);
     embed.setFooter(footer);
     msg.channel.send(embed);
