@@ -16,10 +16,10 @@ client.once("ready", () => {
 // Connect to MongoDB Atlas
 mongoose.connect(config.mongoURI, { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true }).then(
   () => {
-    console.log("MongoDB connected...\n");
+    console.log("MongoDB connected...");
   },
   err => {
-    console.log("MongoDB could not connect...\n" + err);
+    console.log("MongoDB could not connect..." + err);
   }
 );
 
