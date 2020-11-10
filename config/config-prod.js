@@ -1,6 +1,6 @@
 module.exports = {
-  mongoURI: process.env.MONGO_URI,
-  token: process.env.TOKEN,
+  mongoURI: process.env.MONGO_BINGO,
+  token: process.env.TOKEN_BINGO,
   developerId: "191635691594186753",
   validRoles: {
     1: "752745454889861211", // Staff
