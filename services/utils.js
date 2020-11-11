@@ -70,7 +70,7 @@ const record = async (msg, args) => {
 
     let footer = "";
 
-    if (winner.streak === 3) {
+    if (winner.streak === 10) {
       winner.bingo = true;
       footer += `💰 ${winner.discordName} has been added to the Bingo Book\n`;
       await winnerMember.roles.add(bingoRole);
