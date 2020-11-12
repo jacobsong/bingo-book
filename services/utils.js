@@ -127,13 +127,13 @@ const calculateELO = (winner, loser, winnerOldPoints, loserOldPoints) => {
   loser.streak = 0;
   loser.lastMatch = Date.now();
 
-  if (winnerOldPoints < 65 && winner.points >= 65 && winner.points < 130) rtnVal.winnerRankUp = true;
-  if (winnerOldPoints < 130 && winner.points >= 130 && winner.points < 220) rtnVal.winnerRankUp = true;
-  if (winnerOldPoints < 220 && winner.points >= 220) rtnVal.winnerRankUp = true;
+  if (winnerOldPoints < 65 && winner.points >= 65 && winner.points < 130 && winner.rank === 1) rtnVal.winnerRankUp = true;
+  if (winnerOldPoints < 130 && winner.points >= 130 && winner.points < 220 && winner.rank === 2) rtnVal.winnerRankUp = true;
+  if (winnerOldPoints < 220 && winner.points >= 220 && winner.rank === 3) rtnVal.winnerRankUp = true;
 
-  if (loserOldPoints >= 33 && loser.points < 33) rtnVal.loserRankDown = true;
-  if (loserOldPoints >= 98 && loser.points < 98) rtnVal.loserRankDown = true;
-  if (loserOldPoints >= 175 && loser.points < 175) rtnVal.loserRankDown = true;
+  if (loserOldPoints >= 33 && loser.points < 33 && loser.rank === 2) rtnVal.loserRankDown = true;
+  if (loserOldPoints >= 98 && loser.points < 98 && loser.rank === 3) rtnVal.loserRankDown = true;
+  if (loserOldPoints >= 175 && loser.points < 175 && loser.rank === 4) rtnVal.loserRankDown = true;
 
   return rtnVal;
 };
