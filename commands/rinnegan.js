@@ -12,6 +12,8 @@ module.exports = {
   usage: undefined,
   async execute(msg, args) {
     const embed = new Discord.MessageEmbed().setColor("#bd9fe7");
+    const starting = new Discord.MessageEmbed().setColor("#bd9fe7").setDescription("Starting...");
+    msg.channel.send(starting);
     const allRoles = [];
     Object.keys(config.rankNames).forEach(rankName => {
       allRoles.push(msg.guild.roles.cache.find(role => role.name === rankName));
@@ -22,8 +24,9 @@ module.exports = {
       let count = 0;
 
       for (let player of result) {
+        let playerMember;
         try {
-          const playerMember = await msg.guild.members.fetch(player.discordId);
+          playerMember = await msg.guild.members.fetch(player.discordId);
         } catch (e) {
           continue;
         }
@@ -52,6 +55,9 @@ module.exports = {
       if (count === 0) {
         embed.setDescription("Everything looks fine");
         msg.channel.send(embed);
+      } else {
+        const finished = new Discord.MessageEmbed().setColor("#bd9fe7").setDescription("Finished");
+        msg.channel.send(finished);
       }
 
     } catch (e) {
