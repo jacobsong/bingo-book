@@ -22,7 +22,11 @@ module.exports = {
       let count = 0;
 
       for (let player of result) {
-        const playerMember = await msg.guild.members.fetch(player.discordId);
+        try {
+          const playerMember = await msg.guild.members.fetch(player.discordId);
+        } catch (e) {
+          continue;
+        }
         const currentRoles = playerMember.roles.cache.filter(role => role.name in config.rankNames);
         if (currentRoles.size > 0) {
           if (currentRoles.size > 1) {
