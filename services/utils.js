@@ -98,7 +98,7 @@ const record = async (msg, args) => {
   } catch (e) {
     console.error(e);
     embed.setColor("RED");
-    embed.setDescription("Database error");
+    embed.setDescription("Please make sure your rank matches what's on your =profile");
     msg.channel.send(embed);
   }
 }

@@ -25,7 +25,11 @@ module.exports = {
         playerAvatar = msg.mentions.users.first().avatarURL({ dynamic: true });
       } else {
         playerId = args[0];
-        playerAvatar = (await msg.client.users.fetch(args[0])).avatarURL({ dynamic: true });
+        try {
+          playerAvatar = (await msg.client.users.fetch(args[0])).avatarURL({ dynamic: true });
+        } catch (e) {
+          return;
+        }
       }
     }
 

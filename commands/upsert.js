@@ -4,7 +4,7 @@ const config = require("../config/config");
 
 module.exports = {
   name: "upsert",
-  description: "Add or update a player. Use [=help upsert] for an example",
+  description: "Create or update a player. Use [=help upsert] for an example",
   guildOnly: true,
   roleRequired: 1,
   argsRequired: 6,
