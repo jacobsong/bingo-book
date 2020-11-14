@@ -54,7 +54,24 @@ const record = async (msg, args) => {
 
     const winnerOldELO = winner.points;
     const loserOldELO = loser.points;
+    let footer = "";
+
+    if (loser.bingo && winner.rank <= loser.rank) {
+      const prize = Math.round(0.1 * loserOldELO);
+      winner.points += prize;
+      loser.bingo = false;
+      loser.points -= prize;
+      await loserMember.roles.remove(bingoRole);
+      footer += `💰 ${winner.discordName} has crossed ${loser.discordName} off the Bingo Book\n`;
+    }
+
     const {winnerRankUp, loserRankDown} = calculateELO(winner, loser, winnerOldELO, loserOldELO);
+
+    if (winner.streak === 10) {
+      winner.bingo = true;
+      await winnerMember.roles.add(bingoRole);
+      footer += `💰 ${winner.discordName} has been added to the Bingo Book\n`;
+    }
 
     if (winnerRankUp && winner.rank < 4) {
       await winnerMember.roles.remove(roles.get(winner.rank.toString()));
@@ -67,23 +84,6 @@ const record = async (msg, args) => {
       loser.rank -= 1;
       await loserMember.roles.add(roles.get(loser.rank.toString()));
     }
-
-    let footer = "";
-
-    if (winner.streak === 10) {
-      winner.bingo = true;
-      footer += `💰 ${winner.discordName} has been added to the Bingo Book\n`;
-      await winnerMember.roles.add(bingoRole);
-    }
-
-    if (loser.bingo && winner.rank <= loser.rank) {
-      const prize = Math.round(0.1 * loserOldELO);
-      winner.points += prize;
-      loser.bingo = false;
-      loser.points -= prize;
-      await loserMember.roles.remove(bingoRole);
-      footer += `💰 ${winner.discordName} has crossed ${loser.discordName} off the Bingo Book\n`;
-    }    
 
     await winner.save();
     await loser.save();
