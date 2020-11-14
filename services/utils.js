@@ -8,6 +8,17 @@ const record = async (msg, args) => {
   const secondId = args[2].replace(/[<@!>]/g, "");
   const firstGames = Number(args[1]);
   const secondGames = Number(args[3]);
+  const thumbnails = {
+    1: "https://cdn.discordapp.com/attachments/777028934520406017/777029231817261066/akatsuki.png",
+    2: "https://cdn.discordapp.com/attachments/777028934520406017/777029241753567239/hinata.png",
+    3: "https://cdn.discordapp.com/attachments/777028934520406017/777029243011072020/itachi.png",
+    4: "https://cdn.discordapp.com/attachments/777028934520406017/777029246483824700/jiraiya.png",
+    5: "https://cdn.discordapp.com/attachments/777028934520406017/777029249223491644/kakashi.png",
+    6: "https://cdn.discordapp.com/attachments/777028934520406017/777029254926958602/naruto.png",
+    7: "https://cdn.discordapp.com/attachments/777028934520406017/777029258065215488/obito.png",
+    8: "https://cdn.discordapp.com/attachments/777028934520406017/777029260568428555/pain.png",
+    9: "https://cdn.discordapp.com/attachments/777028934520406017/777029262904786952/tobi.png"
+  }
 
   try {
     let firstPlayer = await Player.findOne({ discordId: firstId });
@@ -90,7 +101,7 @@ const record = async (msg, args) => {
 
     embed.setColor("AQUA");
     embed.setDescription(`${winner.discordName} wins ${winnerGames}-${loserGames}`);
-    embed.setThumbnail("https://cdn.discordapp.com/emojis/774169144240373803.png");
+    embed.setThumbnail(thumbnails[Math.floor(Math.random() * (9 - 1 + 1) + 1)]);
     embed.addField(`${winner.discordName}`, `\`\`\`Points:  ${winnerOldELO} => ${winner.points}\`\`\``);
     embed.addField(`${loser.discordName}`, `\`\`\`Points:  ${loserOldELO} => ${loser.points}\`\`\``);
     embed.setFooter(footer);
