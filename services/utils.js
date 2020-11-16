@@ -76,7 +76,15 @@ const record = async (msg, args) => {
       footer += `💰 ${winner.discordName} has crossed ${loser.discordName} off the Bingo Book\n`;
     }
 
-    const {winnerRankUp, loserRankDown} = calculateELO(winner, loser, winnerOldELO, loserOldELO);
+    const {winnerRankUp, loserRankDown, winnerBonus} = calculateELO(winner, loser, winnerOldELO, loserOldELO);
+
+    if (winnerBonus) {
+      footer += `💰 ${winner.discordName} received a bonus of ${winnerBonus} points for having Bingo\n`;
+    }
+
+    if (loser.points < 0) {
+      loser.points = 0;
+    }
 
     if (winner.streak === 10) {
       winner.bingo = true;
@@ -118,6 +126,7 @@ const calculateELO = (winner, loser, winnerOldPoints, loserOldPoints) => {
   const rtnVal = {
     winnerRankUp: false,
     loserRankDown: false,
+    winnerBonus: 0
   };
 
   let pointsGained;
@@ -138,6 +147,12 @@ const calculateELO = (winner, loser, winnerOldPoints, loserOldPoints) => {
   loser.streak = 0;
   loser.lastMatch = Date.now();
 
+  if (winner.bingo) {
+    const bonus = Math.round(0.25 * pointsGained);
+    winner.points += bonus;
+    rtnVal.winnerBonus = bonus;
+  }
+
   if (winnerOldPoints < 65 && winner.points >= 65 && winner.points < 130 && winner.rank === 1) rtnVal.winnerRankUp = true;
   if (winnerOldPoints < 130 && winner.points >= 130 && winner.points < 220 && winner.rank === 2) rtnVal.winnerRankUp = true;
   if (winnerOldPoints < 220 && winner.points >= 220 && winner.rank === 3) rtnVal.winnerRankUp = true;
@@ -146,7 +161,7 @@ const calculateELO = (winner, loser, winnerOldPoints, loserOldPoints) => {
   if (loserOldPoints >= 98 && loser.points < 98 && loser.rank === 3) rtnVal.loserRankDown = true;
   if (loserOldPoints >= 175 && loser.points < 175 && loser.rank === 4) rtnVal.loserRankDown = true;
 
-  return rtnVal;
+   return rtnVal;
 };
 
 module.exports = {
