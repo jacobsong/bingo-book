@@ -5,7 +5,7 @@ const config = require("../config/config");
 module.exports = {
   name: "profile",
   description: "Displays your own profile or the mentioned user's profile",
-  guildOnly: true,
+  guildOnly: false,
   roleRequired: 0,
   argsRequired: 0,
   mentionsRequired: 0,
