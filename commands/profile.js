@@ -20,7 +20,14 @@ module.exports = {
     let playerAvatar = msg.author.avatarURL({ dynamic: true });
 
     if (args[0]) {
-      if (msg.mentions.members.size === 1) {
+      if (msg.channel.type === "dm") {
+        playerId = args[0];
+        try {
+          playerAvatar = (await msg.client.users.fetch(args[0])).avatarURL({ dynamic: true });
+        } catch (e) {
+          return;
+        }
+      } else if (msg.mentions.members.size === 1) {
         playerId = msg.mentions.users.first().id;
         playerAvatar = msg.mentions.users.first().avatarURL({ dynamic: true });
       } else {
