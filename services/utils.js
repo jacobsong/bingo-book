@@ -148,7 +148,7 @@ const calculateELO = (winner, loser, winnerOldPoints, loserOldPoints) => {
   loser.lastMatch = Date.now();
 
   if (winner.bingo) {
-    const bonus = Math.round(0.25 * pointsGained);
+    const bonus = Math.round(0.5 * pointsGained);
     winner.points += bonus;
     rtnVal.winnerBonus = bonus;
   }
